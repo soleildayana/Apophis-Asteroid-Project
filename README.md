@@ -13,7 +13,7 @@ Modelo Sol-Tierra-Luna-Apopphis_Júpiter
 
 ### Próximos pasos
 
-- **`modelo2_SEMAJV.ipynb`**: agregar Venus para mejorar la precisión orbital.
-- **`modelo3_completo.ipynb`**: sistema de 9 cuerpos (todos los planetas + Luna + Apophis).
+- Hallar el valor de h para Apophis respecto al Sol.
+- Hallas las cuadraturas de Apophis y verificar que permanezcan constantes.
 - Cuantificar la convergencia de la distancia mínima al ir añadiendo cuerpos.
 - Análisis de incertidumbre: Monte Carlo sobre las condiciones iniciales de Apophis.
