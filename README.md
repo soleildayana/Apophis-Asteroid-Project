@@ -144,3 +144,31 @@ https://github.com/soleildayana/Apophis-Asteroid-Project/blob/main/modelo3_compl
 ## Dependencias principales
 - `pymcel` (integración N‑cuerpos y utilidades de efemérides)  
   https://github.com/seap-udea/pymcel
+
+---
+
+## Orbit Viewer (nuevo)
+
+Se agregó una implementación reusable tipo **VOP/JPL** en:
+
+- `orbit_viewer.py` — módulo reutilizable (librería)
+- `demo_orbit_viewer.ipynb` — notebook ejecutable con el demo completo
+
+### Qué incluye
+
+- API con `OrbitElements`, `propagate_two_body`, `orbital_plane_normal`, `make_orbit_viewer`.
+- Propagación Kepleriana **two-body** usando `pymcel.kepler_newton`.
+- Visualización 3D interactiva con:
+  - órbitas de Mercurio, Venus, Tierra, Marte y **Apophis** con sus colores,
+  - **tick marks** (picket-fence) que muestran la inclinación de cada plano orbital,
+  - **posición actual** de cada cuerpo al 2026-04-22 00:00 UTC,
+  - plano de la eclíptica con grilla (`z=0`),
+  - línea de nodos (amarilla) y vector normal al plano orbital (verde) de Apophis,
+  - banda sombreada entre eclíptica y plano orbital de Apophis,
+  - anotación de distancias (Sol, Tierra) y fecha.
+
+### Ejecutar demo
+
+Abrir y ejecutar `demo_orbit_viewer.ipynb` en JupyterLab, Jupyter Notebook o Google Colab.
+
+La celda final genera una figura interactiva en 3D embebida en el notebook.
