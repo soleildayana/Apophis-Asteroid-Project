@@ -151,27 +151,24 @@ https://github.com/soleildayana/Apophis-Asteroid-Project/blob/main/modelo3_compl
 
 Se agregó una implementación reusable tipo **VOP/JPL** en:
 
-- `orbit_viewer.py`
-- `demo_orbit_viewer.py`
+- `orbit_viewer.py` — módulo reutilizable (librería)
+- `demo_orbit_viewer.ipynb` — notebook ejecutable con el demo completo
 
 ### Qué incluye
 
-- API mínima con `OrbitElements`, `propagate_two_body`, `orbital_plane_normal`, `make_orbit_viewer`.
+- API con `OrbitElements`, `propagate_two_body`, `orbital_plane_normal`, `make_orbit_viewer`.
 - Propagación Kepleriana **two-body** usando `pymcel.kepler_newton`.
-- Visualización 3D con:
-  - órbita del objeto,
-  - plano de la eclíptica (`z=0`),
-  - plano orbital,
-  - línea de nodos,
-  - vector normal del plano orbital,
-  - banda sombreada entre eclíptica y plano orbital.
+- Visualización 3D interactiva con:
+  - órbitas de Mercurio, Venus, Tierra, Marte y **Apophis** con sus colores,
+  - **tick marks** (picket-fence) que muestran la inclinación de cada plano orbital,
+  - **posición actual** de cada cuerpo al 2026-04-22 00:00 UTC,
+  - plano de la eclíptica con grilla (`z=0`),
+  - línea de nodos (amarilla) y vector normal al plano orbital (verde) de Apophis,
+  - banda sombreada entre eclíptica y plano orbital de Apophis,
+  - anotación de distancias (Sol, Tierra) y fecha.
 
 ### Ejecutar demo
 
-```bash
-python demo_orbit_viewer.py
-```
+Abrir y ejecutar `demo_orbit_viewer.ipynb` en JupyterLab, Jupyter Notebook o Google Colab.
 
-Esto genera:
-
-- `orbit_viewer_demo.html` (figura interactiva en 3D).
+La celda final genera una figura interactiva en 3D embebida en el notebook.
