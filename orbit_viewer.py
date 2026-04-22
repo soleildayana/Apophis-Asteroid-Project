@@ -84,7 +84,7 @@ def propagate_two_body(elements: OrbitElements, times: np.ndarray) -> np.ndarray
     if elements.M0 is not None:
         M0 = elements.to_radians(elements.M0)
     else:
-        nu0 = elements.to_radians(elements.nu0 if elements.nu0 is not None else 0.0)
+        nu0 = elements.to_radians(elements.nu0)
         M0 = _true_to_mean_anomaly(nu0, elements.e)
 
     n = np.sqrt(elements.mu / elements.a**3)
@@ -234,7 +234,7 @@ def make_orbit_viewer(
             y=[0],
             z=[0],
             mode="markers+text",
-            text=["Sun"],
+            text=["Sol"],
             textposition="top center",
             name="Sol",
             marker=dict(size=7, color="#fff14f"),
