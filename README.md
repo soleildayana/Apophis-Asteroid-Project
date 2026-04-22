@@ -144,3 +144,34 @@ https://github.com/soleildayana/Apophis-Asteroid-Project/blob/main/modelo3_compl
 ## Dependencias principales
 - `pymcel` (integración N‑cuerpos y utilidades de efemérides)  
   https://github.com/seap-udea/pymcel
+
+---
+
+## Orbit Viewer (nuevo)
+
+Se agregó una implementación reusable tipo **VOP/JPL** en:
+
+- `/home/runner/work/Apophis-Asteroid-Project/Apophis-Asteroid-Project/orbit_viewer.py`
+- `/home/runner/work/Apophis-Asteroid-Project/Apophis-Asteroid-Project/demo_orbit_viewer.py`
+
+### Qué incluye
+
+- API mínima con `OrbitElements`, `propagate_two_body`, `orbital_plane_normal`, `make_orbit_viewer`.
+- Propagación Kepleriana **two-body** usando `pymcel.kepler_newton`.
+- Visualización 3D con:
+  - órbita del objeto,
+  - plano de la eclíptica (`z=0`),
+  - plano orbital,
+  - línea de nodos,
+  - vector normal del plano orbital,
+  - banda sombreada entre eclíptica y plano orbital.
+
+### Ejecutar demo
+
+```bash
+python demo_orbit_viewer.py
+```
+
+Esto genera:
+
+- `orbit_viewer_demo.html` (figura interactiva en 3D).
