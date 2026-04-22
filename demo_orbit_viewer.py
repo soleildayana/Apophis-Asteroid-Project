@@ -3,6 +3,7 @@ import numpy as np
 from orbit_viewer import OrbitElements, make_orbit_viewer, propagate_two_body, sample_times
 
 
+# Gravitational parameter of the Sun in AU^3/day^2.
 MU_SUN_AU_DAY2 = 2.9591220828559093e-4
 
 

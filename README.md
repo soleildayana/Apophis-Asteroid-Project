@@ -151,8 +151,8 @@ https://github.com/soleildayana/Apophis-Asteroid-Project/blob/main/modelo3_compl
 
 Se agregó una implementación reusable tipo **VOP/JPL** en:
 
-- `/home/runner/work/Apophis-Asteroid-Project/Apophis-Asteroid-Project/orbit_viewer.py`
-- `/home/runner/work/Apophis-Asteroid-Project/Apophis-Asteroid-Project/demo_orbit_viewer.py`
+- `orbit_viewer.py`
+- `demo_orbit_viewer.py`
 
 ### Qué incluye
 

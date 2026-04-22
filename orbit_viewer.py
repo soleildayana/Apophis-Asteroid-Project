@@ -230,8 +230,14 @@ def make_orbit_viewer(
 
     fig.add_trace(
         go.Scatter3d(
-            x=[0], y=[0], z=[0], mode="markers+text", text=["Sun"], textposition="top center", name="Sol",
-            marker=dict(size=7, color="#fff14f")
+            x=[0],
+            y=[0],
+            z=[0],
+            mode="markers+text",
+            text=["Sun"],
+            textposition="top center",
+            name="Sol",
+            marker=dict(size=7, color="#fff14f"),
         )
     )
 
