@@ -126,27 +126,120 @@ def calcular_elementos_orbitales(rvec, vvec, mu):
 p, e, I, Omega, omega, f = calcular_elementos_orbitales(rvec, vvec, mu)
 p, e, I*rad, Omega*rad, omega*rad, f*rad
 
-"""## La órbita del Sol"""
+"""## Estudio completo de los elementos orbitales de Apophis"""
 
-tabla, jds, Xs = pc.consulta_spice(
-    id='Sun',
-    location='@SSB',
-    epochs=dict(start='2026-04-20', stop='2058-04-20', step='180d')
-)
-Xs = np.array(Xs)
+rad = 180 / np.pi
+a = p / (1 - e**2)
 
-mu = pc.constantes.mu_sun + pc.constantes.mu_jupiter + pc.constantes.mu_saturn
-Es = np.zeros((len(jds), 6))
-for i, jd in enumerate(jds):
-  rvec = Xs[i, :3]
-  vvec = Xs[i, 3:]
-  p, e, I, Omega, omega, f = calcular_elementos_orbitales(rvec, vvec, mu)
-  hvec = np.cross(rvec, vvec)
-  Es[i] = p, e, I, Omega, omega, f
-  plt.plot(rvec[0], rvec[1], 'ko')
+print("=" * 57)
+print("  Elementos orbitales de Apophis  (2026-04-20, @SSB)")
+print("=" * 57)
+print(f"  Semilato recto       p  = {p:.6f} AU")
+print(f"  Excentricidad        e  = {e:.6f}")
+print(f"  Semieje mayor        a  = {a:.6f} AU")
+print(f"  Inclinación          I  = {I*rad:.4f}°")
+print(f"  Long. nodo asc.      Ω  = {Omega*rad:.4f}°")
+print(f"  Arg. periapsis       ω  = {omega*rad:.4f}°")
+print(f"  Anomalía verdadera   f  = {f*rad:.4f}°")
+print("=" * 57)
 
-plt.axis('equal')
-plt.grid()
+"""Visualización de la órbita de Apophis en el plano eclíptico"""
 
-plt.plot(jds, Es[:,0])
+fs_plot = np.linspace(0, 2 * np.pi, 500)
+rs_orb = p / (1 + e * np.cos(fs_plot))
+
+Rz_omega_m   = spy.rotate(omega, 3)
+Rx_I_m       = spy.rotate(I, 1)
+Rz_Omega_m   = spy.rotate(Omega, 3)
+M_perifocal2astro = (Rz_omega_m @ Rx_I_m @ Rz_Omega_m).T
+
+xfs_orb = rs_orb * np.cos(fs_plot)
+yfs_orb = rs_orb * np.sin(fs_plot)
+zfs_orb = np.zeros_like(xfs_orb)
+rvecs_orb = (M_perifocal2astro @ np.array([xfs_orb, yfs_orb, zfs_orb])).T
+
+fig, ax = plt.subplots(figsize=(7, 7))
+ax.plot(rvecs_orb[:, 0], rvecs_orb[:, 1], 'b-', label='Órbita de Apophis')
+ax.plot(0, 0, 'yo', ms=12, label='Sol (aprox. SSB)')
+ax.plot(rvec[0], rvec[1], 'ro', ms=8, label='Apophis 2026-04-20')
+ax.set_xlabel('x [AU]')
+ax.set_ylabel('y [AU]')
+ax.set_title('Órbita de Apophis en el plano eclíptico')
+ax.axis('equal')
+ax.grid()
+ax.legend()
+plt.tight_layout()
+plt.show()
+
+"""## Integración de 2 cuerpos con pymcel
+
+Integramos la trayectoria relativa Apophis–Sol usando `pc.doscuerpos_solucion`
+y determinamos el momento angular específico $h$ respecto al Sol.
+"""
+
+# ~2 períodos orbitales de Apophis (aprox. 323 días cada uno)
+T_apo = 2 * np.pi * np.sqrt(a**3 / mu)
+ts_int = np.linspace(0, 2 * T_apo, 2000)
+
+rs_int, vs_int = pc.doscuerpos_solucion(mu, rvec, vvec, ts_int)
+
+hvec_int0 = np.cross(rs_int[0], vs_int[0])
+h_int0 = np.linalg.norm(hvec_int0)
+
+print(f"\nh respecto al Sol (integración 2 cuerpos, pymcel):")
+print(f"  h = {h_int0:.8f}  (unidades Horizons: AU²/día aprox.)")
+print(f"  h analítico (r×v inicial) = {h:.8f}")
+
+"""## Cuadraturas del problema relativo Sol–Apophis
+
+Las tres integrales primeras (cuadraturas) del problema de dos cuerpos son:
+
+1. **MARE** – Momento Angular Relativo Específico: $h = |\\vec{r}\\times\\dot{\\vec{r}}|$
+2. **ERE**  – Energía Relativa Específica: $\\varepsilon = v^2/2 - \\mu/r$
+3. **Vector de Laplace** (excentricidad): $\\vec{e}_L = (\\dot{\\vec{r}}\\times\\vec{h})/\\mu - \\hat{r}$
+
+Verificamos que las tres se mantienen constantes a lo largo de la integración.
+"""
+
+# Calcular las tres cuadraturas en cada instante
+hvecs_int   = np.cross(rs_int, vs_int)                                   # (N,3)
+hs_int      = np.linalg.norm(hvecs_int, axis=1)                          # MARE
+
+r_norms_int = np.linalg.norm(rs_int, axis=1)
+v_norms_int = np.linalg.norm(vs_int, axis=1)
+epsilons    = 0.5 * v_norms_int**2 - mu / r_norms_int                    # ERE
+
+evecs_int   = (np.cross(vs_int, hvecs_int) / mu
+               - rs_int / r_norms_int[:, np.newaxis])                    # Vector de Laplace
+es_int      = np.linalg.norm(evecs_int, axis=1)
+
+# Variación relativa (medida de conservación numérica)
+delta_h   = (hs_int.max()   - hs_int.min())   / abs(hs_int[0])
+delta_eps = (epsilons.max() - epsilons.min())  / abs(epsilons[0])
+delta_e   = (es_int.max()   - es_int.min())    / abs(es_int[0])
+
+print("\nConservación de las cuadraturas a lo largo de la integración:")
+print(f"  MARE  h = {hs_int[0]:.8f}  →  Δh/h₀    = {delta_h:.2e}")
+print(f"  ERE   ε = {epsilons[0]:.8f}  →  Δε/|ε₀|  = {delta_eps:.2e}")
+print(f"  |ê_L| e = {es_int[0]:.8f}  →  Δe/e₀    = {delta_e:.2e}")
+
+# Gráficas de las cuadraturas vs tiempo
+fig, axs = plt.subplots(3, 1, figsize=(10, 9), sharex=True)
+
+axs[0].plot(ts_int, hs_int, 'b')
+axs[0].set_ylabel('MARE  $h$')
+axs[0].set_title('Cuadraturas del problema relativo Sol–Apophis')
+axs[0].grid()
+
+axs[1].plot(ts_int, epsilons, 'g')
+axs[1].set_ylabel('ERE  $\\varepsilon$')
+axs[1].grid()
+
+axs[2].plot(ts_int, es_int, 'r')
+axs[2].set_ylabel('$|\\vec{e}_L|$  (excentricidad)')
+axs[2].set_xlabel('Tiempo (unidades Horizons desde 2026-04-20)')
+axs[2].grid()
+
+plt.tight_layout()
+plt.show()
 
