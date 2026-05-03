@@ -30,7 +30,7 @@ Apophis-Asteroid-Project/
 │   ├── nb6_crtbp_jacobi_tisserand.ipynb
 │   └── nb7_perturbaciones_gauss.ipynb
 ├── dart_inverso/                         ← NUEVO: Maniobra cinética "DART Inverso"
-│   ├── nb00_arquitectura_parches_conicos.ipynb
+│   ├── nb00_parches_conicos.ipynb
 │   ├── nb01_kepler_solver_clase.ipynb
 │   ├── nb02_cuadraturas_invariantes.ipynb
 │   ├── nb03_hodografo_velocidad.ipynb
@@ -50,7 +50,7 @@ cuadraturas (existente) → nb4_kepler → nb5_hodografo → nb6_jacobi_tisseran
 
          │
          ▼  (continúa en dart_inverso/)
-  nb00_arquitectura → nb01_kepler_solver → nb02_cuadraturas_invariantes
+  nb00_parches_conicos → nb01_kepler_solver → nb02_cuadraturas_invariantes
                               ↓
               nb03_hodografo → nb04_sensibilidad → nb05_gauss_lagrange
 ```
@@ -244,7 +244,7 @@ Cuando Apophis cruza $R_H$, la gravedad del Sol pasa a ser perturbación y el pr
 
 ### NB00 — Arquitectura y Parches Cónicos
 
-**Archivo:** [`dart_inverso/nb00_arquitectura_parches_conicos.ipynb`](dart_inverso/nb00_arquitectura_parches_conicos.ipynb)
+**Archivo:** [`dart_inverso/nb00_parches_conicos.ipynb`](dart_inverso/nb00_parches_conicos.ipynb)
 
 **Descripción física:**  
 Notebook de planificación y diagnóstico. Calcula los parámetros orbitales de referencia para el diseño de la maniobra:
