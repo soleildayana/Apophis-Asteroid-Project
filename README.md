@@ -18,6 +18,7 @@ Proyecto de **Mecánica Celeste** que estudia la aproximación a la Tierra del a
 
 ```
 Apophis-Asteroid-Project/
+├── main.ipynb                        ← Reporte principal consolidado (académico/científico)
 ├── modelos/                         ← Integración N-cuerpos (pipeline principal)
 │   ├── modelo1_SEMAJ.ipynb
 │   ├── modelo2_SEMAJV.ipynb
@@ -29,15 +30,16 @@ Apophis-Asteroid-Project/
 │   └── nb7_perturbaciones_gauss.ipynb
 ├── Orbit_Viewer.ipynb
 ├── cuadraturas_PRelativo2cuerpos.ipynb
-└── README.md
+├── README.md
+└── agents.md
 ```
 
 ### Flujo narrativo recomendado
 
 ```
-cuadraturas (existente) → nb4_kepler → nb5_hodografo → nb6_jacobi_tisserand → nb7_gauss
-       ↑                                                          ↑
-  modelo3_completo (existente) ─────────────────────────────────┘
+main.ipynb (reporte final consolidado)
+       ↑
+modelos + analisis (notebooks de soporte)
 ```
 
 ---
